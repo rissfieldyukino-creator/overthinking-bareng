@@ -1,265 +1,394 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Overthink Bareng</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overthinking Bareng — Catatan & Chat</title>
   <style>
-    * {
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      background: linear-gradient(135deg, #ff69b4, #ff1493, #ffc0cb);
-      color: white;
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(to bottom, #fdf2f8, #fce7f3);
+      color: #831843;
       margin: 0;
-      padding: 20px;
       min-height: 100vh;
+      padding: 20px;
     }
-
     .container {
-      background: rgba(255, 192, 203, 0.4);
-      backdrop-filter: blur(15px);
-      border-radius: 25px;
-      padding: 40px;
-      max-width: 900px;
+      max-width: 720px;
       margin: 0 auto;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(255, 20, 147, 0.2);
     }
-
     h1 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 42px;
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-      color: #fff;
-      font-weight: 900;
-      letter-spacing: 1px;
+      text-align: center;
+      font-size: 1.6rem;
+      margin: 0 0 4px;
     }
-
-    p {
-      color: rgba(255, 255, 255, 0.95);
-      margin-bottom: 30px;
-      font-size: 16px;
-      font-weight: 500;
-      font-style: italic;
+    .tagline {
+      text-align: center;
+      color: #be185d;
+      margin: 0 0 20px;
+      font-size: 0.95rem;
     }
-
-    .input-container {
+    .name-bar {
       display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #fbcfe8;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
     }
-
+    .name-bar label {
+      color: #be185d;
+      font-size: 0.85rem;
+    }
+    .name-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #831843;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: #ffffff;
+      border: 1px solid #fbcfe8;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 16px;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 8px;
+      color: #be185d;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+    }
+    .tab.active {
+      background: #ec4899;
+      color: white;
+    }
+    .panel {
+      display: none;
+    }
+    .panel.active {
+      display: block;
+    }
+    textarea, input.text {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #fbcfe8;
+      border-radius: 10px;
+      padding: 12px;
+      color: #831843;
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus, input.text:focus {
+      border-color: #ec4899;
+    }
     textarea {
-      width: 60%;
-      height: 90px;
-      border-radius: 15px;
-      padding: 15px;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      outline: none;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      backdrop-filter: blur(10px);
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-      resize: none;
+      min-height: 90px;
     }
-
-    textarea::placeholder {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    textarea:focus {
-      background: rgba(255, 255, 255, 0.3);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
-    .name-input {
-      width: 25%;
-      height: 90px;
-      border-radius: 15px;
-      padding: 15px;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      outline: none;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
-      backdrop-filter: blur(10px);
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-    }
-
-    .name-input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .name-input:focus {
-      background: rgba(255, 255, 255, 0.3);
-      border-color: rgba(255, 255, 255, 0.6);
-    }
-
     button {
-      margin-top: 15px;
-      padding: 12px 30px;
-      border-radius: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      background: rgba(255, 255, 255, 0.25);
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background: #ec4899;
       color: white;
       cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
-      font-size: 15px;
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.15s;
     }
-
-    button:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(1.08);
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    button:hover { background: #db2777; }
+    button:disabled { background: #f9a8d4; cursor: not-allowed; }
+    .row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
     }
-
-    .post {
-      background: rgba(255, 182, 193, 0.5);
-      backdrop-filter: blur(10px);
-      margin: 15px auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 700px;
-      border-radius: 15px;
-      text-align: left;
-      animation: fadeIn 0.4s ease;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.15);
+    .row textarea, .row input.text { flex: 1; }
+    #notes-list .note {
+      background: #fce7f3;
+      border: 1px solid #fbcfe8;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 10px 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      color: #831843;
     }
-
-    .post-header {
+    .note-meta {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      color: #be185d;
+      font-size: 0.78rem;
+      margin-bottom: 6px;
     }
-
-    .post-author {
-      font-weight: bold;
-      color: rgba(255, 255, 255, 0.98);
-      font-size: 15px;
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+    .note-name { font-weight: 600; color: #db2777; }
+    #chat-box {
+      background: #fff1f7;
+      border: 1px solid #fbcfe8;
+      border-radius: 12px;
+      height: 50vh;
+      overflow-y: auto;
+      padding: 12px;
+      margin-bottom: 10px;
     }
-
-    .post-timestamp {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.8);
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+    .msg {
+      margin: 6px 0;
+      display: flex;
+      flex-direction: column;
+      max-width: 80%;
     }
-
-    .post-text {
-      margin-bottom: 15px;
-      line-height: 1.6;
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 15px;
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    .relate {
-      margin-top: 10px;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
-      cursor: pointer;
+    .msg .bubble {
       padding: 8px 12px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      display: inline-block;
-      transition: 0.2s;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
-      font-weight: 500;
+      border-radius: 14px;
+      background: #fbcfe8;
+      color: #831843;
+      word-wrap: break-word;
+      white-space: pre-wrap;
     }
-
-    .relate:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
+    .msg .meta {
+      font-size: 0.7rem;
+      color: #be185d;
+      margin-bottom: 2px;
+    }
+    .msg.mine { align-self: flex-end; align-items: flex-end; }
+    .msg.mine .bubble { background: #ec4899; color: white; }
+    .msg.theirs { align-self: flex-start; align-items: flex-start; }
+    .empty {
+      text-align: center;
+      color: #f472b6;
+      padding: 20px;
+      font-style: italic;
+    }
+    .err {
+      color: #be123c;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      min-height: 1.2em;
     }
   </style>
 </head>
-
 <body>
+  <div class="container">
+    <h1>Overthinking Bareng</h1>
+    <p class="tagline">ayo berbagi pikiran & ngobrol bareng...</p>
 
-<div class="container">
-  <h1>Overthink Bareng</h1>
-  <p>"Kalau kamu lagi mikir sesuatu... mungkin aku juga."</p>
+    <div class="name-bar">
+      <label for="nama">Nama:</label>
+      <input id="nama" type="text" maxlength="40" placeholder="Anonim" />
+    </div>
 
-  <div class="input-container">
-    <input type="text" class="name-input" id="author" placeholder="Siapa nama kamu?">
-    <textarea id="input" placeholder="Tulis sesuatu yang lagi kamu pikirin..."></textarea>
+    <div class="tabs">
+      <div class="tab active" data-tab="notes">Catatan</div>
+      <div class="tab" data-tab="chat">Chat</div>
+    </div>
+
+    <div id="panel-notes" class="panel active">
+      <textarea id="note-input" placeholder="Tulis pikiranmu di sini..."></textarea>
+      <div class="row" style="justify-content: flex-end;">
+        <button id="note-send">Kirim Catatan</button>
+      </div>
+      <div id="note-err" class="err"></div>
+      <div id="notes-list"></div>
+    </div>
+
+    <div id="panel-chat" class="panel">
+      <div id="chat-box"><div class="empty">Belum ada pesan. Mulai obrolan!</div></div>
+      <div class="row">
+        <input id="chat-input" class="text" placeholder="Ketik pesan..." maxlength="1000" />
+        <button id="chat-send">Kirim</button>
+      </div>
+      <div id="chat-err" class="err"></div>
+    </div>
   </div>
-  <button onclick="kirim()">Kirim Pikiran</button>
 
-  <div id="feed"></div>
-</div>
+  <script>
+    const namaInput = document.getElementById('nama');
+    namaInput.value = localStorage.getItem('nama') || '';
+    namaInput.addEventListener('change', () => {
+      localStorage.setItem('nama', namaInput.value.trim());
+    });
 
-<script>
-let data = JSON.parse(localStorage.getItem("data")) || [];
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + t.dataset.tab).classList.add('active');
+      if (t.dataset.tab === 'chat') refreshChat();
+      if (t.dataset.tab === 'notes') refreshNotes();
+    }));
 
-function render() {
-  let feed = document.getElementById("feed");
-  feed.innerHTML = "";
+    function fmtTime(ts) {
+      const d = new Date(ts);
+      return d.toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' });
+    }
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
 
-  data.slice().reverse().forEach((item, i) => {
-    let div = document.createElement("div");
-    div.className = "post";
+    // ===== Notes =====
+    const noteInput = document.getElementById('note-input');
+    const noteSend = document.getElementById('note-send');
+    const noteErr = document.getElementById('note-err');
+    const notesList = document.getElementById('notes-list');
 
-    div.innerHTML = `
-      <div class="post-header">
-        <div class="post-author">👤 ${item.author || 'Anonim'}</div>
-        <small class="post-timestamp">${new Date(item.timestamp).toLocaleDateString('id-ID')}</small>
-      </div>
-      <div class="post-text">${item.text}</div>
-      <div class="relate" onclick="relate(${i})">
-        💭 ${item.relate} orang juga kepikiran ini
-      </div>
-    `;
+    async function refreshNotes() {
+      try {
+        const res = await fetch('/api/notes');
+        const data = await res.json();
+        renderNotes(data.notes || []);
+      } catch (e) {
+        noteErr.textContent = 'Gagal memuat catatan.';
+      }
+    }
+    function renderNotes(notes) {
+      if (!notes.length) {
+        notesList.innerHTML = '<div class="empty">Belum ada catatan. Jadilah yang pertama!</div>';
+        return;
+      }
+      notesList.innerHTML = notes.map(n => `
+        <div class="note">
+          <div class="note-meta">
+            <span class="note-name">${escapeHtml(n.nama || 'Anonim')}</span>
+            <span>${fmtTime(n.waktu)}</span>
+          </div>
+          ${escapeHtml(n.isi)}
+        </div>
+      `).join('');
+    }
+    noteSend.addEventListener('click', async () => {
+      const isi = noteInput.value.trim();
+      const nama = (namaInput.value.trim() || 'Anonim').slice(0, 40);
+      noteErr.textContent = '';
+      if (!isi) { noteErr.textContent = 'Catatan kosong.'; return; }
+      noteSend.disabled = true;
+      try {
+        const res = await fetch('/api/notes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isi, nama }),
+        });
+        if (!res.ok) {
+          const e = await res.json().catch(() => ({}));
+          noteErr.textContent = e.error || 'Gagal mengirim.';
+        } else {
+          noteInput.value = '';
+          await refreshNotes();
+        }
+      } catch {
+        noteErr.textContent = 'Gagal mengirim.';
+      } finally {
+        noteSend.disabled = false;
+      }
+    });
 
-    feed.appendChild(div);
-  });
-}
+    // ===== Chat =====
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+    const chatErr = document.getElementById('chat-err');
+    let lastSeen = 0;
+    let knownIds = new Set();
+    let chatMessages = [];
 
-function kirim() {
-  let input = document.getElementById("input");
-  let author = document.getElementById("author");
+    function renderChat() {
+      const myName = (namaInput.value.trim() || 'Anonim');
+      if (!chatMessages.length) {
+        chatBox.innerHTML = '<div class="empty">Belum ada pesan. Mulai obrolan!</div>';
+        return;
+      }
+      chatBox.innerHTML = chatMessages.map(m => {
+        const mine = (m.nama || 'Anonim') === myName;
+        return `
+          <div class="msg ${mine ? 'mine' : 'theirs'}">
+            <div class="meta">${escapeHtml(m.nama || 'Anonim')} · ${fmtTime(m.waktu)}</div>
+            <div class="bubble">${escapeHtml(m.isi)}</div>
+          </div>
+        `;
+      }).join('');
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    async function refreshChat() {
+      try {
+        const res = await fetch('/api/chat');
+        const data = await res.json();
+        chatMessages = data.messages || [];
+        knownIds = new Set(chatMessages.map(m => m.id));
+        if (chatMessages.length) {
+          lastSeen = Math.max(...chatMessages.map(m => m.waktu));
+        }
+        renderChat();
+      } catch {
+        chatErr.textContent = 'Gagal memuat chat.';
+      }
+    }
+    async function pollChat() {
+      if (!document.getElementById('panel-chat').classList.contains('active')) return;
+      try {
+        const url = lastSeen ? `/api/chat?since=${lastSeen}` : '/api/chat';
+        const res = await fetch(url);
+        const data = await res.json();
+        const newMsgs = (data.messages || []).filter(m => !knownIds.has(m.id));
+        if (newMsgs.length) {
+          newMsgs.forEach(m => knownIds.add(m.id));
+          chatMessages = chatMessages.concat(newMsgs);
+          lastSeen = Math.max(lastSeen, ...newMsgs.map(m => m.waktu));
+          renderChat();
+        }
+      } catch { /* ignore polling errors */ }
+    }
+    async function sendChat() {
+      const isi = chatInput.value.trim();
+      const nama = (namaInput.value.trim() || 'Anonim').slice(0, 40);
+      chatErr.textContent = '';
+      if (!isi) return;
+      chatSend.disabled = true;
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isi, nama }),
+        });
+        if (!res.ok) {
+          const e = await res.json().catch(() => ({}));
+          chatErr.textContent = e.error || 'Gagal mengirim.';
+        } else {
+          chatInput.value = '';
+          await pollChat();
+        }
+      } catch {
+        chatErr.textContent = 'Gagal mengirim.';
+      } finally {
+        chatSend.disabled = false;
+        chatInput.focus();
+      }
+    }
+    chatSend.addEventListener('click', sendChat);
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendChat();
+      }
+    });
 
-  if (!input.value.trim()) return;
-
-  data.push({
-    text: input.value,
-    author: author.value.trim() || "Anonim",
-    relate: 0,
-    timestamp: new Date().toISOString()
-  });
-
-  localStorage.setItem("data", JSON.stringify(data));
-  input.value = "";
-  author.value = "";
-  render();
-}
-
-function relate(i) {
-  data[i].relate++;
-  localStorage.setItem("data", JSON.stringify(data));
-  render();
-}
-
-render();
-</script>
-
+    // initial load + polling loop
+    refreshNotes();
+    setInterval(pollChat, 2500);
+  </script>
 </body>
 </html>
